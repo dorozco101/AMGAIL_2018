@@ -60,14 +60,18 @@ class ER(object):
             index = self.current
             lastIndex = index
             while self.memory_size-(lastIndex-index) > self.max_size:
-                if self.current >= self.memory_size:
+                if self.current >= self.memory_size or lastIndex >=self.memory_size:
                     print("breaking for no reason")
                     self.current = self.history_length
+
                     break
                 done = False
-                #print("inside outer loop")
+                print("inside outer loop")
                 while not done and lastIndex<self.memory_size:
-                    #print("inside inner loop")
+                    print("last index: "+str(lastIndex))
+                    print("inside inner loop")
+                    print(self.terminals.shape)
+                    print('mem: '+str(self.memory_size))
                     done = self.terminals[lastIndex]
                     lastIndex+=1
                     
