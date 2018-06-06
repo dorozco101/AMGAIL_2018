@@ -89,8 +89,8 @@ class Driver(object):
         total_rewards = np.asarray(total_rewards)
         if expert:
             sorted_indexs = np.argsort(total_rewards)
-            print("im an expert:")
-            print(np.sort(total_rewards))
+            #print("im an expert:")
+            #print(np.sort(total_rewards))
         else:
             sorted_indexs = np.argsort(total_rewards).tolist()
             bestIndex = sorted_indexs[-1]
@@ -239,10 +239,15 @@ class Driver(object):
                     best_reward_agent,actions,rewards,next_states,terminals,qposs,qvels = self.sort_by_reward(self.algorithm.er_agent,False)
                     #if so add the best experience to expert buffer
                     if best_reward_agent > worst_reward_expert:
+                        print(worst_reward_expert)
                         print(self.algorithm.er_expert.current)
                         print(self.algorithm.er_expert.count)
                         print("replacing expert score: "+str(worst_reward_expert)+" with: "+str(best_reward_agent))
+                        self.algorithm.er_expert.current = 0
+                        print(self.algorithm.er_expert.actions.shape)
+                        
                         self.algorithm.er_expert.add( actions, rewards, next_states, terminals, qposs, qvels)
+                        print(self.algorithm.er_expert.actions.shape)
                         self.algorithm.er_expert.current = 0
                     
                 if self.itr % self.env.collect_experience_interval == 0:

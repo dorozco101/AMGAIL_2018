@@ -86,7 +86,7 @@ class Environment(object):
         self.collect_experience_interval = 15
         self.n_steps_train = 10
         self.discr_policy_itrvl = 100
-        self.replace_expert_interval = 100
+        self.replace_expert_interval = 1000
         self.gamma = 0.99
         self.batch_size = 70
         self.weight_decay = 1e-7

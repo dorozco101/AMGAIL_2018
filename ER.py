@@ -72,7 +72,9 @@ class ER(object):
                     done = self.terminals[lastIndex]
                     
             if lastIndex-index>0:
+                #print(self.actions.shape)
                 self.actions = np.delete(self.actions, slice(index,lastIndex+1,None), 0)
+                #print(self.actions.shape)
                 self.rewards = np.delete(self.rewards, slice(index,lastIndex+1,None), 0)
                 self.states = np.delete(self.states, slice(index,lastIndex+1,None), 0)
                 self.terminals = np.delete(self.terminals, slice(index,lastIndex+1,None), 0)
