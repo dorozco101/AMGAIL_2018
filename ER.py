@@ -66,10 +66,10 @@ class ER(object):
                     break
                 done = False
                 #print("inside outer loop")
-                while not done and lastIndex<=self.memory_size:
+                while not done and lastIndex<self.memory_size:
                     #print("inside inner loop")
-                    lastIndex+=1
                     done = self.terminals[lastIndex]
+                    lastIndex+=1
                     
             if lastIndex-index>0:
                 #print(self.actions.shape)
