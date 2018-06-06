@@ -56,8 +56,6 @@ class Driver(object):
                      alg.do_keep_prob: self.env.do_keep_prob}
         run_vals = self.sess.run(fetches, feed_dict)
         self.update_stats('forward_model', 'loss', run_vals[1])
-    def rate(self,er):
-        current_size = er.memory_size
         
     def sort_by_reward(self,er,expert=True):
         current_size = er.count
