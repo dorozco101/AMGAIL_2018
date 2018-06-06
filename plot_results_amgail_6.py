@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 #%% 
 
 #env_names = ['Hopper-v1','HalfCheetah-v1','InvertedPendulum-v1']
-env_names = ['InvertedPendulum-v1']
+env_names = ['HalfCheetah-v1','InvertedPendulum-v1']
 for i_env in range(len(env_names)):    
     env_name = env_names[i_env]
     skill = ['bad','mixed','good']
@@ -43,7 +43,7 @@ for i_env in range(len(env_names)):
     ax.grid(True)
     ax.set_xlabel('Iteration')
     ax.set_ylabel('Average Reward')
-    ax.set_title(env_name+': Reward per Iteration using AMGAIL')
+    ax.set_title(env_name+': Reward using AMGAIL')
     min_max_x = 10000000000
     extra_x = 1.1
     for i_skill in range(len(skill)):
