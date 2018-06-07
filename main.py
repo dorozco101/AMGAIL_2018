@@ -34,8 +34,10 @@ def dispatcher(env, ER_name):
             driver.train_step()
 
         # Test
+        if (driver.itr % env.test_interval -env.test_interval) > -100:
+            print("about to record")
         if driver.itr % env.test_interval == 0:
-
+            print("iteration"+str(driver.itr))
             # measure performance
             R = []
             for n in range(env.n_episodes_test):
@@ -74,7 +76,7 @@ def dispatcher(env, ER_name):
 if __name__ == '__main__':
     # load environment
     my_env_name = 'Hopper-v1'
-    my_ER_name = 'bad_'+my_env_name+'_er'
+    my_ER_name = 'good_'+my_env_name+'_er'
 
     env = Environment(os.path.curdir, my_env_name, my_ER_name)
 
