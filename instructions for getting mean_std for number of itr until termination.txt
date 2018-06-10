@@ -9,6 +9,9 @@ test_interval controls "resolution". every test_interval, avg reward is computed
 
 once avg reward > = term condition, loop breaks and a figure is generated. Num iterations in in the title. Record the number in the chart. Num iterations is also printed in terminal
 
+
+save_fig doesn't work right now
+
 if using spyder, restart kernel in between runs 
 
 
