@@ -1,0 +1,15 @@
+Getting mean/std itr until termination for each environment, comparing amgail and mgail
+
+
+First, get mixed. then bad. then good. For easiest to hardest environment
+
+change env and skill in main
+term_condition is per environment
+test_interval controls "resolution". every test_interval, avg reward is computed.
+
+once avg reward > = term condition, loop breaks and a figure is generated. Num iterations in in the title. Record the number in the chart. Num iterations is also printed in terminal
+
+if using spyder, restart kernel in between runs 
+
+
+

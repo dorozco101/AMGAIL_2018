@@ -73,7 +73,7 @@ class Environment(object):
         self.expert_data = 'expert_trajectories/'+self.ER_name+'.bin'
         self.n_train_iters = 1000000
         self.n_episodes_test = 10
-        self.test_interval = 1000
+        self.test_interval = 200
         self.n_steps_test = 1000
         self.vis_flag = True
         self.save_models = True
