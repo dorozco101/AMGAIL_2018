@@ -77,12 +77,13 @@ def dispatcher(env, ER_name,end_condition,test_interval):
             print(R[-1]),
             print(' '),
             print(driver.itr)
-            
+            """
             plt.figure()
             plt.plot(R)
             plt.title('AMGAIL, '+ER_name+' itr = ' + str(driver.itr))
             plt.show()
             save_fig(np.array(driver_itrs),np.array(driver.reward_mean_Arr),np.array(driver.reward_std_Arr) ,'results/rewards_plot_'+ER_name+'.png', 'AMGAIL: '+ my_ER_name,'iteration','avg_reward')
+            """
             break
 
         driver.itr += 1
@@ -91,11 +92,11 @@ def dispatcher(env, ER_name,end_condition,test_interval):
 if __name__ == '__main__':
     # load environment
     my_env_name = 'InvertedPendulum-v1'
-    my_ER_name = 'good_'+my_env_name+'_er'
+    my_ER_name = 'mixed_'+my_env_name+'_er'
     env = Environment(os.path.curdir, my_env_name, my_ER_name)
     if my_env_name == 'InvertedPendulum-v1':
         term_condition = 1000
-        test_interval = 20
+        test_interval = 10
     elif my_env_name == 'HalfCheetah-v1':
         term_condition = 2000
         test_interval = 400

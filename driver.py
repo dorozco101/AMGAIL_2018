@@ -9,7 +9,7 @@ from mgail import MGAIL
 class Driver(object):
     def __init__(self, environment,my_ER_name):
 
-        tf.set_random_seed(0)
+        #tf.set_random_seed(0)
         self.ER_name = my_ER_name
         self.env = environment
         
