@@ -21,7 +21,7 @@ def save_fig(itrs,means,stds, filepath="./graph_rewards.png",title = 'rewards vs
   fig.clear()
   plt.close(fig)
   
-def dispatcher(env, ER_name,end_condition,test_interval):
+def dispatcher(env, ER_name,end_condition,test_interval,n_episodes_test,min_iter_test):
 
     driver = Driver(env,ER_name)
     driver_itrs = []
@@ -37,11 +37,11 @@ def dispatcher(env, ER_name,end_condition,test_interval):
         #if (driver.itr % env.test_interval -env.test_interval) > -100:
         #    print("about to record")
         #if driver.itr % env.test_interval == 0:
-        if driver.itr % test_interval == 0:
-            print("iteration"+str(driver.itr))
+        if (driver.itr % test_interval == 0) and ( driver.itr >= min_iter_test ):
+
             # measure performance
             R = []
-            for n in range(env.n_episodes_test):
+            for n in range(n_episodes_test):
                 R.append(driver.collect_experience(record=True, vis=False, noise_flag=False, n_steps=1000))
 
             #vis=env.vis_flag
@@ -51,16 +51,16 @@ def dispatcher(env, ER_name,end_condition,test_interval):
             driver.reward_std = np.std(R)
             
             #save running rewards and stds
-            driver_itrs.append(driver.itr)
-            driver.reward_mean_Arr.append(driver.reward_mean)
-            driver.reward_std_Arr.append(driver.reward_std)
+            #driver_itrs.append(driver.itr)
+            #driver.reward_mean_Arr.append(driver.reward_mean)
+            #driver.reward_std_Arr.append(driver.reward_std)
             
             
             #save_fig(np.array(driver_itrs),np.array(driver.reward_mean_Arr),np.array(driver.reward_std_Arr) ,'results/rewards_plot_'+ER_name+'.png', my_ER_name,'iteration','avg_reward')
             
-            np.savetxt('results/reward_itrs_'+ER_name+'.csv', np.array(driver_itrs), delimiter=",")
-            np.savetxt('results/reward_means_'+ER_name+'.csv', np.array(driver.reward_mean_Arr), delimiter=",")
-            np.savetxt('results/reward_stds_'+ER_name+'.csv', np.array(driver.reward_std_Arr), delimiter=",")
+            #np.savetxt('results/reward_itrs_'+ER_name+'.csv', np.array(driver_itrs), delimiter=",")
+            #np.savetxt('results/reward_means_'+ER_name+'.csv', np.array(driver.reward_mean_Arr), delimiter=",")
+            #np.savetxt('results/reward_stds_'+ER_name+'.csv', np.array(driver.reward_std_Arr), delimiter=",")
             
             #np.save('reward_itrs_hop.npy',np.array(driver_itrs))
             #np.save('reward_means_hop.npy',np.array(driver.reward_mean_Arr))
@@ -73,8 +73,8 @@ def dispatcher(env, ER_name,end_condition,test_interval):
             #if env.train_mode and env.save_models:
             #   driver.save_model(dir_name=env.config_dir)
                 
-        if R[-1] >= end_condition:
-            print(R[-1]),
+        if driver.reward_mean >= end_condition:
+            print(driver.reward_mean),
             print(' '),
             print(driver.itr)
             """
@@ -94,14 +94,18 @@ if __name__ == '__main__':
     my_env_name = 'InvertedPendulum-v1'
     my_ER_name = 'mixed_'+my_env_name+'_er'
     env = Environment(os.path.curdir, my_env_name, my_ER_name)
-    if my_env_name == 'InvertedPendulum-v1':
-        term_condition = 1000
-        test_interval = 10
+    if my_env_name == 'InvertedPendulum-v1':        
+        test_interval = 100
+        term_condition = 990
+        n_episodes_test = 5
+        min_iter_test = 1000
     elif my_env_name == 'HalfCheetah-v1':
         term_condition = 2000
         test_interval = 400
+        n_episodes_test = 5
     else:
         term_condition = 2500    
         test_interval = 400
+        n_episodes_test = 5
     # start training
-    dispatcher(env=env,ER_name = my_ER_name, end_condition = term_condition, test_interval = test_interval)
+    dispatcher(env=env,ER_name = my_ER_name, end_condition = term_condition, test_interval = test_interval,n_episodes_test = n_episodes_test, min_iter_test = min_iter_test)
