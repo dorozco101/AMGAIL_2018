@@ -1,4 +1,4 @@
-import cPickle
+import pickle
 import tensorflow as tf
 import numpy as np
 
@@ -8,8 +8,8 @@ def save_params(fname, saver, session):
 
 
 def load_er(fname, batch_size, history_length, traj_length):
-    f = file(fname, 'rb')
-    er = cPickle.load(f)
+    f = open(fname, 'rb')
+    er = pickle.load(f)
     er.batch_size = batch_size
     er = set_er_stats(er, history_length, traj_length)
     er.max_size = er.memory_size
