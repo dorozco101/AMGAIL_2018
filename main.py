@@ -21,11 +21,12 @@ def save_fig(itrs,means,stds, filepath="./graph_rewards.png",title = 'rewards vs
   fig.clear()
   plt.close(fig)
   
-def dispatcher(env, ER_name,end_condition,test_interval,n_episodes_test,min_iter_test):
+def dispatcher(env, ER_name,end_condition,test_interval,n_episodes_test, R_start_testing):
 
     driver = Driver(env,ER_name)
     driver_itrs = []
 
+    R_inst_max = 0
 
     while driver.itr < env.n_train_iters:
 
@@ -37,7 +38,13 @@ def dispatcher(env, ER_name,end_condition,test_interval,n_episodes_test,min_iter
         #if (driver.itr % env.test_interval -env.test_interval) > -100:
         #    print("about to record")
         #if driver.itr % env.test_interval == 0:
-        if (driver.itr % test_interval == 0) and ( driver.itr >= min_iter_test ):
+        if (driver.itr % test_interval == 0) and (R_inst_max < R_start_testing):
+            R_inst_max = np.max(np.array([R_inst_max, driver.collect_experience(record=True, vis=False, noise_flag=False, n_steps=1000)]))
+            print('Max_reward: '),
+            print(str(R_inst_max))
+            print('/'),
+            print(str(R_start_testing))
+        elif (driver.itr % test_interval == 0):
 
             # measure performance
             R = []
@@ -74,9 +81,13 @@ def dispatcher(env, ER_name,end_condition,test_interval,n_episodes_test,min_iter
             #   driver.save_model(dir_name=env.config_dir)
                 
         if driver.reward_mean >= end_condition:
+            print('mean reward: '),
             print(driver.reward_mean),
             print(' '),
-            print(driver.itr)
+            print('itr #: '),
+            print(driver.itr),
+            print('test_interval: '),
+            print(test_interval)
             """
             plt.figure()
             plt.plot(R)
@@ -98,7 +109,8 @@ if __name__ == '__main__':
         test_interval = 100
         term_condition = 990
         n_episodes_test = 5
-        min_iter_test = 1000
+        #min_iter_test = 3000
+        R_start_testing = 700
     elif my_env_name == 'HalfCheetah-v1':
         term_condition = 2000
         test_interval = 400
@@ -108,4 +120,4 @@ if __name__ == '__main__':
         test_interval = 400
         n_episodes_test = 5
     # start training
-    dispatcher(env=env,ER_name = my_ER_name, end_condition = term_condition, test_interval = test_interval,n_episodes_test = n_episodes_test, min_iter_test = min_iter_test)
+    dispatcher(env=env,ER_name = my_ER_name, end_condition = term_condition, test_interval = test_interval,n_episodes_test = n_episodes_test, R_start_testing = R_start_testing)
